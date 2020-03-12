@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Test de Movies Fetch</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+</head>
+<body>
+	<div class="container my-3">
+		<div class="row justify-content-center">
+			<div class="col-8">
+				<div class="card">
+					<img src="..." class="card-img-top" width="50%">
+					<div class="card-body">
+						<h5 class="card-title"></h5>
+						<p class="card-text"></p>
+						<a href="index.html" class="btn btn-primary">Volver</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		let params = new URLSearchParams(location.search);
+		let id = params.get('id');
+
+		fetch(`http://localhost:3000/${id}`)
+			.then(response => response.json())
+			.then(movie => { 
+				let imgTag = document.querySelector('img');
+				let titleTag = document.querySelector('h5');
+				let overviewTag = document.querySelector('p');
+
+				imgTag.src = movie.poster;
+				titleTag.innerHTML = movie.title;
+				overviewTag.innerHTML = movie.overview;
+			})
+			.catch(error => console.log(error) || alert('No vino la data'));
+	</script>
+</body>
+</html>

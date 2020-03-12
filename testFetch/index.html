@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Test de Movies Fetch</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+</head>
+<body>
+	<div class="container">
+		<h1>Total de películas: <span id="totalMovies"></span></h1>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Title</th>
+					<th>Overview</th>
+					<th>Vote Average</th>
+					<th>Release Date</th>
+					<th>Original Language</th>
+					<th>Poster</th>
+				</tr>
+			</thead>
+			<tbody id="moviesContent">
+			</tbody>
+		</table>
+	</div>
+
+	<script>
+		fetch('http://localhost:3000/')
+			.then(response => response.json())
+			.then(info => {
+				let movies = info.data;
+				let totalTag = document.querySelector('#totalMovies');
+				totalTag.innerText = info.total_results;
+				
+				let moviesTableTag = document.querySelector('#moviesContent');
+				
+				movies.forEach(movie => {
+					moviesTableTag.innerHTML += `
+						<tr>
+							<td>${movie.id}</td>
+							<td>
+								${movie.title} <br>
+								<a href="detail.html?id=${movie.id}" class="btn btn-success btn-sm">VER MÁS</a>
+							</td>
+							<td>${movie.overview.slice(0, 80)}...</td>
+							<td>${movie.vote_average}</td>
+							<td>${movie.release_date}</td>
+							<td>${movie.original_language}</td>
+							<td><img src="${movie.poster}" width="100px"></td>
+						</tr>
+					`;
+				});
+			})
+			.catch(error => console.log(error) || alert('No vino la data'));
+	</script>
+</body>
+</html>
